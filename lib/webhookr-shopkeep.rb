@@ -16,13 +16,19 @@ module Webhookr
       end
 
       def process(raw_response)
-        Array.wrap(raw_response).collect do |p|
+        Array.wrap(parse(raw_response)).collect do |p|
           Webhookr::AdapterResponse.new(
             SERVICE_NAME,
             EVENT_KEY,
-            OstructUtils.to_ostruct(p)
+            p
           )
         end
+      end
+      
+      private
+
+      def parse(raw_response)
+        JSON.parse(raw_response)
       end
 
     end
